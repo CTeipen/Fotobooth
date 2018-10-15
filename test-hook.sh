@@ -20,7 +20,6 @@ case "$ACTION" in
 					echo "Hier wäre konvertiert worden" &
 					#./convertPicture.sh $ARGUMENT &
         else # fuer das jpg-Bild
-					#./convertPicture.sh $ARGUMENT &
 					./startSlideshow.sh "$ARGUMENT" &
 
         fi
