@@ -5,7 +5,7 @@ Um das Projekt nutzen zu können, kann es entweder per Konsole oder aus dem Brow
 
 ### Browser
 
-Auf der Seite ![https://github.com/CTeipen/Fotobooth]{Fotobooth - Github} befinden sich oben 
+Auf der Seite https://github.com/CTeipen/Fotobooth befinden sich oben 
 rechts ein Button "Clone or Download". Betätigt man diesen kann das Projekt als Zip-Datei heruntergeladen werden. 
 Nach dem Entpacken der Zip-Datei, geht es mit dem Kapitel "Benutzung" weiter.
 
