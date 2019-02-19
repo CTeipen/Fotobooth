@@ -35,3 +35,8 @@ der mittels eines Cloud Clients direkt synchronisiert wird. Wenn man nun diesen 
 Fotoshooting den QR-Code mittels Smartphone scannen und direkt auf alle gemachten Bilder zugreifen.
 
 Hinweis: Der QR-Code wird im Ordner gespeichert, der auch für die Fotos (-p) angegeben wird.
+
+### Installation des Nextcloud Clients
+sudo add-apt-repository ppa:nextcloud-devs/client
+sudo apt-get update
+sudo apt-get install nextcloud-client
