@@ -41,11 +41,16 @@ def check_vars():
         if len(txt_qrCode.get()) <= 0:
             messagebox.showinfo('Fehlende Eingabe', 'Bitte geben Sie eine URL an, auf die der QR Code zeigen soll.')
             return False
+        else:
+            subprocess.Popen("qrencode -o %sqrcode.png -s 10 %s"
+                % (txt_cloudFolder.get(), txt_qrCode.get()), shell=True)
 
     if bool_zeit.get() == 1:
         if len(txt_zeit.get()) != 20:
             messagebox.showinfo('Fehlende Eingabe', 'Bitte geben Sie das aktuelle Datum und die Uhrzeit im vorgegebenen Format an.')
             return False
+        else:
+            subprocess.Popen("sudo date -s %s" % (txt_zeit.get()), shell=True)
 
     return True
 
@@ -55,16 +60,19 @@ def startScript():
     # print('Start')
 
     if check_vars():
-        p = subprocess.Popen("./start.sh -pc %s -pu %s -q %s -t %s"
-            % (txt_cloudFolder.get(),
-            txt_usbFolder.get(),
-            txt_qrCode.get(),
-            txt_zeit.get()), shell=True)
+        if bool_usbFolder.get() == 1:
+            p = subprocess.Popen("./start.sh %s %s"
+                % (txt_cloudFolder.get(),
+                txt_usbFolder.get()), shell=True)
+        else:
+            p = subprocess.Popen("./start.sh %s"
+                % (txt_cloudFolder.get()), shell=True)
 
         global process
         process = p
 
         btn_start.destroy()
+        global btn_end
         btn_end = ttk.Button(window,text='Beenden', command=stopScript)
         btn_end.grid(row=13, column=2, sticky=E)
 
@@ -73,7 +81,12 @@ def startScript():
 
 def stopScript():
     if 'process' in globals():
-        os.killpg(os.getpgid(process.pid), signal.SIGTERM)
+        process.kill()
+
+        btn_end.destroy()
+        global btn_start
+        btn_start = ttk.Button(window,text='Starten', command=startScript)
+        btn_start.grid(row=13, column=2, sticky=E)
 
 #def clicked():
 #     subprocess.call("./start.sh", shell=True)
