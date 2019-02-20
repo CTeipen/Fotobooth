@@ -2,43 +2,43 @@
 
 
 ### Uhrzeit
-echo "Ist die Uhrzeit/Datum korrekt? [j/n]"
-read timebool
-
-if [ $timebool == 'n' ]
-then
-	echo "Wie ist die aktuelle Uhrzeit? (02 FEB 2019 22:18:00)"
-	read time
-
-	sudo date -s "$time"
-fi
+# echo "Ist die Uhrzeit/Datum korrekt? [j/n]"
+# read timebool
+#
+# if [ $timebool == 'n' ]
+# then
+# 	echo "Wie ist die aktuelle Uhrzeit? (02 FEB 2019 22:18:00)"
+# 	read time
+#
+# 	sudo date -s "$time"
+# fi
 
 
 ### Speicherort
-echo "Wo sollen die Bilder gespeichert werden? (/home/fotobox/Bilder/)"
-read pfad
-
-if [ $pfad == '' ]
-then
-	pfad="/home/fotobox/Bilder/"
-fi
+# echo "Wo sollen die Bilder gespeichert werden? (/home/fotobox/Bilder/)"
+# read pfad
+#
+# if [ $pfad == '' ]
+# then
+# 	pfad="/home/fotobox/Bilder/"
+# fi
 
 
 ### QR-Code
-echo "Soll ein QR-Code angefertigt werden? [j/n]"
-read qrbool
+# echo "Soll ein QR-Code angefertigt werden? [j/n]"
+# read qrbool
+#
+# if [ $qrbool == 'j' ]
+# then
+# 	echo "Wo soll der QR-Code hinführen?"
+# 	read qrcontent
+#
+# 	qrencode -o $pfad"qrcode.png" -s 10 $qrcontent
+# fi
 
-if [ $qrbool == 'j' ]
-then
-	echo "Wo soll der QR-Code hinführen?"
-	read qrcontent
+gphoto2 --capture-tethered --hook-script=test-hook.sh --filename=$1"photo_booth-%Y%m%d-%H%M%S.%C" --force-overwrite
 
-	qrencode -o $pfad"qrcode.png" -s 10 $qrcontent
-fi
-
-gphoto2 --capture-tethered --hook-script=test-hook.sh --filename=$pfad"photo_booth-%Y%m%d-%H%M%S.%C" --force-overwrite
-
-
+echo 'Ende'
 
 #if [ $# -eq 4 ] && [ $1 == '-p' ] && [ $3 == '-q' ]
 #then
@@ -48,7 +48,7 @@ gphoto2 --capture-tethered --hook-script=test-hook.sh --filename=$pfad"photo_boo
 
     # Darstellung eines schwarzen Bildes im Vollbildmodus (vermutlich möchte niemand das Terminal sehen)
     # eog -f -w util/blackscreen.png &
-     
+
     # Generierung eines QRCodes
     #qrencode -o $2"qrcode.png" -s 10 $4
 

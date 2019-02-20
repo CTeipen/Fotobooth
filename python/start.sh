@@ -1,17 +1,11 @@
 #!/bin/bash
-echo "Start start.sh"
+echo "start.sh - Start Fotobox"
 
-if [ $# -eq 8 ] && [ $1 == '-pc' ] && [ $3 == '-pu' ] && [ $5 == '-q' ] && [ $7 == '-t' ]
+gphoto2 --capture-tethered --hook-script=test-hook.sh --filename=$1"photo_booth-%Y%m%d-%H%M%S.%C" --force-overwrite
+
+if [ $# -eq 2 ]
 then
-  echo "Anzahl der Parameter $#"
-  echo "Pfad Cloud: $2"
-  echo "Pfad USB: $4"
-  echo "QR-Code: $6"
-  echo "Zeit: $8"
-  sleep 10
-else
-  echo 'Aufruf mit falschen Parametern'
-  echo 'Beispiel: ./capturePic.sh -p PFAD_ZU_BILDERN -q URL_QR_CODE'
+  rsync -a $1 $2
 fi
 
-echo "Ende start.sh"
+echo "start.sh - End Fotobox"
