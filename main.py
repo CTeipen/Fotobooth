@@ -303,13 +303,13 @@ class Ui_Fotobox(object):
                             os.kill(pid, signal.SIGKILL)
 
                     ###
-                    subprocess.Popen("./start.sh %s %s"
+                    subprocess.Popen(SOFTWARE_PATH + "start.sh %s %s"
                         % (txt_cloudFolder.text(),
                         txt_usbFolder.text()), stdout=subprocess.PIPE, shell=True)
                 else:
 
                     ###
-                    subprocess.Popen("./start.sh %s"
+                    subprocess.Popen(SOFTWARE_PATH + "start.sh %s"
                         % (txt_cloudFolder.text()), stdout=subprocess.PIPE, shell=True)
 
 
