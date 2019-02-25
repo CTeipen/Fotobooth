@@ -21,12 +21,12 @@ case "$ACTION" in
 		
 		# Dateigröße reduzieren (dauert auf dem Pi u lange...)
 		# convert -quality 40 "$ARGUMENT" "$CLOUDDIR$ARGUMENT" && echo 'File Size reduced'
-		cp "$ARGUMENT" "$CLOUDDIR$ARGUMENT"
 
 		# nach abgeschlossenem Download der Bilder, kopieren auf USB Stick
 		if [ ! -z "$USBDIR" ]
 		then
-			cp "$ARGUMENT" "$USBDIR$ARGUMENT"
+			FILENAME = "${ARGUMENT##*/}"
+			cp "$ARGUMENT" "$USBDIR$FILENAME"
 		fi
 
 		# Dateigröße reduzieren

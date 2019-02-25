@@ -10,9 +10,13 @@ then
 	export USBDIR="$2"
 else
 	export CLOUDDIR="$1"
+	export USBDIR=""
 fi		
 
-gphoto2 --capture-tethered --hook-script=/home/pi/git/Fotobooth/hook.sh --filename="youinthebox-%Y%m%d-%H%M%S.%C" --force-overwrite
+echo "$self: CLOUDDIR $CLOUDDIR"
+echo "$self: USBDIR $USBDIR"
+
+gphoto2 --capture-tethered --hook-script=/home/pi/git/Fotobooth/hook.sh --filename=$CLOUDDIR"youinthebox-%Y%m%d-%H%M%S.%C" --force-overwrite
 
 echo "$self: STOP"
 

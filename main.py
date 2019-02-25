@@ -299,9 +299,13 @@ class Ui_Fotobox(object):
                     for line in out.splitlines():
                         if b'gvfsd-gphoto2' in line:
                             pid = int(line.split(None,1)[0])
+                            print(pid)
                             os.kill(pid, signal.SIGKILL)
 
                     ###
+                    print("################################")
+                    print(txt_cloudFolder.text())
+                    print(txt_usbFolder.text())
                     subprocess.Popen(SOFTWARE_PATH + "start.sh %s %s"
                         % (txt_cloudFolder.text(),
                         txt_usbFolder.text()), stdout=subprocess.PIPE, shell=True)
@@ -357,17 +361,9 @@ class Ui_Fotobox(object):
 
 
             btn_startEnd.setText('Starten')
+            self._before_exit()
 
-            msg = QMessageBox()
-            msg.setIcon(QMessageBox.Information)
-            msg.setWindowTitle("Fotobox beendet")
-            msg.setText("Fotobox 2.0 wurd erfolgreich beendet. Soll der Rechner runtergefahren werden?")
-            msg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
-            ret = msg.exec_()
-
-            if ret == QMessageBox.Yes:
-                os.system('shutdown -s')
-
+########################################################################
 
     def closeEvent(self):
         if btn_startEnd.text() == 'Beenden':
@@ -392,7 +388,14 @@ class Ui_Fotobox(object):
 
 
             btn_startEnd.setText('Starten')
+            self._before_exit()
+        
+            
+########################################################################
 
+
+    def _before_exit(self):
+            
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Information)
         msg.setWindowTitle("Fotobox beendet")
