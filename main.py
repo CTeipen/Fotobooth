@@ -8,7 +8,7 @@ import subprocess
 import pickle
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QHBoxLayout, QGroupBox, QDialog, QVBoxLayout, QGridLayout, QCheckBox, QMessageBox
+from PyQt5.QtWidgets import QApplication, QWidget, QDesktopWidget, QPushButton, QHBoxLayout, QGroupBox, QDialog, QVBoxLayout, QGridLayout, QCheckBox, QMessageBox
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot
 
@@ -34,6 +34,11 @@ class Ui_Fotobox(object):
         FotoboxDialog.setGeometry(self.left, self.top, self.width, self.height)
         self.createGridLayout()
 
+        qtRectangle = FotoboxDialog.frameGeometry()
+        centerPoint = QDesktopWidget().availableGeometry().center()
+        qtRectangle.moveCenter(centerPoint)
+        FotoboxDialog.move(qtRectangle.topLeft())
+
         windowLayout = QVBoxLayout()
         windowLayout.addWidget(self.horizontalGroupBox)
         FotoboxDialog.setLayout(windowLayout)
@@ -44,93 +49,141 @@ class Ui_Fotobox(object):
         layout = QGridLayout()
         layout.setColumnStretch(1, 2)
         layout.setColumnStretch(2, 3)
+        
+        gridX = 0
+        gridY = 0
+        
+        # Camera Label
+        gridX += 1
+        gridY = 0
+        lbl_camera = QtWidgets.QLabel(FotoboxDialog)
+        lbl_camera.setObjectName("lbl_camera")
+        lbl_camera.setText("Kamera")
+        layout.addWidget(lbl_camera,gridY,gridX)
+        
 
+        # Camera Input
+        gridX += 1
+        global txt_camera
+        txt_camera = QtWidgets.QLineEdit(FotoboxDialog)
+        txt_camera.setEnabled(False)
+        txt_camera.setObjectName("txt_camera")
+        layout.addWidget(txt_camera,gridY,gridX)
+
+        # Camera Button
+        gridX += 1
+        btn_camera = QtWidgets.QToolButton(FotoboxDialog)
+        btn_camera.setObjectName("btn_camera")
+        btn_camera.setText('Check')
+        btn_camera.clicked.connect(self._check_camera_connection)
+        layout.addWidget(btn_camera,gridY,gridX)
+         
+        
+               
         # Cloudfolder Label
+        gridX = 1
+        gridY += 1
         lbl_cloudFolder = QtWidgets.QLabel(FotoboxDialog)
         lbl_cloudFolder.setObjectName("lbl_cloudFolder")
         lbl_cloudFolder.setText("Cloud Ordner")
-        layout.addWidget(lbl_cloudFolder,0,1)
+        layout.addWidget(lbl_cloudFolder,gridY,gridX)
+        
 
         # Cloudfolder Input
+        gridX += 1
         global txt_cloudFolder
         txt_cloudFolder = QtWidgets.QLineEdit(FotoboxDialog)
         txt_cloudFolder.setEnabled(False)
         txt_cloudFolder.setObjectName("txt_cloudFolder")
-        layout.addWidget(txt_cloudFolder,0,2)
+        layout.addWidget(txt_cloudFolder,gridY,gridX)
 
         # Cloudfolder Button
+        gridX += 1
         global btn_cloudFolder
         btn_cloudFolder = QtWidgets.QToolButton(FotoboxDialog)
         btn_cloudFolder.setObjectName("btn_cloudFolder")
         btn_cloudFolder.setText('...')
         btn_cloudFolder.clicked.connect(functools.partial(self._open_file_dialog, DEFAULT_CLOUD_PATH, txt_cloudFolder))
-        layout.addWidget(btn_cloudFolder,0,3)
+        layout.addWidget(btn_cloudFolder,gridY,gridX)
 
 
         # UsbFolder CheckBox
+        gridY += 1
+        gridX = 0
         global cb_usbFolder
         cb_usbFolder = QCheckBox()
         cb_usbFolder.setChecked(False)
         cb_usbFolder.stateChanged.connect(lambda:self.btnstate(btn_usbFolder))
-        layout.addWidget(cb_usbFolder,1,0)
+        layout.addWidget(cb_usbFolder,gridY,gridX)
 
         # UsbFolder Label
+        gridX += 1
         lbl_usbFolder = QtWidgets.QLabel(FotoboxDialog)
         lbl_usbFolder.setObjectName("lbl_usbFolder")
         lbl_usbFolder.setText("USB Ordner")
-        layout.addWidget(lbl_usbFolder,1,1)
+        layout.addWidget(lbl_usbFolder,gridY,gridX)
 
         # UsbFolder Input
+        gridX += 1
         global txt_usbFolder
         txt_usbFolder = QtWidgets.QLineEdit(FotoboxDialog)
         txt_usbFolder.setEnabled(False)
         txt_usbFolder.setObjectName("txt_usbFolder")
-        layout.addWidget(txt_usbFolder,1,2)
+        layout.addWidget(txt_usbFolder,gridY,gridX)
 
         # UsbFolder Button
+        gridX += 1
         global btn_usbFolder
         btn_usbFolder = QtWidgets.QToolButton(FotoboxDialog)
         btn_usbFolder.setObjectName("btn_usbFolder")
         btn_usbFolder.setText('...')
         btn_usbFolder.setEnabled(False)
         btn_usbFolder.clicked.connect(functools.partial(self._open_file_dialog, DEFAULT_USB_PATH, txt_usbFolder))
-        layout.addWidget(btn_usbFolder,1,3)
+        layout.addWidget(btn_usbFolder,gridY,gridX)
+
 
 
         # qrCode CheckBox
+        gridY += 1
+        gridX = 0
         global cb_qrCode
         cb_qrCode = QCheckBox()
         cb_qrCode.setChecked(False)
         cb_qrCode.stateChanged.connect(lambda:self.btnstate(txt_qrCode))
-        layout.addWidget(cb_qrCode,2,0)
+        layout.addWidget(cb_qrCode,gridY,gridX)
 
         # qrCode Label
+        gridX += 1
         lbl_qrCode = QtWidgets.QLabel(FotoboxDialog)
         lbl_qrCode.setObjectName("lbl_qrCode")
         lbl_qrCode.setText("QR Code")
-        layout.addWidget(lbl_qrCode,2,1)
+        layout.addWidget(lbl_qrCode,gridY,gridX)
 
         # qrCode Input
+        gridX += 1
         global txt_qrCode
         txt_qrCode = QtWidgets.QLineEdit(FotoboxDialog)
         txt_qrCode.setEnabled(False)
         txt_qrCode.setObjectName("txt_qrCode")
-        layout.addWidget(txt_qrCode,2,2)
+        layout.addWidget(txt_qrCode,gridY,gridX)
 
         # Start/End Button
+        gridY += 1
+        gridX = 2
         global btn_startEnd
         btn_startEnd = QtWidgets.QToolButton(FotoboxDialog)
         btn_startEnd.setObjectName("btn_startEnd")
         btn_startEnd.setText('Starten')
         btn_startEnd.clicked.connect(functools.partial(self._start_fotobox, FotoboxDialog))
-        layout.addWidget(btn_startEnd,3,2)
+        layout.addWidget(btn_startEnd,gridY,gridX)
 
-        # global btn_reset
-        # btn_reset = QtWidgets.QToolButton(FotoboxDialog)
-        # btn_reset.setObjectName("btn_reset")
-        # btn_reset.setText('Reset')
-        # btn_reset.clicked.connect(self.resetUI)
-        # layout.addWidget(btn_reset,3,3)
+        gridX += 1
+        global btn_reset
+        btn_reset = QtWidgets.QToolButton(FotoboxDialog)
+        btn_reset.setObjectName("btn_reset")
+        btn_reset.setText('Reset')
+        btn_reset.clicked.connect(self.resetUI)
+        layout.addWidget(btn_reset,gridY,gridX)
 
         self.horizontalGroupBox.setLayout(layout)
 
@@ -150,6 +203,8 @@ class Ui_Fotobox(object):
             cb_qrCode.setChecked(fotobox_data['boolQrCode'])
             txt_qrCode.setText(fotobox_data['textQrCode'])
 
+########################################################################
+
     def resetUI(self, FotoboxDialog):
         if os.path.isfile(SOFTWARE_PATH + "save.p"):
             txt_cloudFolder.setText("")
@@ -164,6 +219,25 @@ class Ui_Fotobox(object):
             os.remove(SOFTWARE_PATH + "save.p")
             python = sys.executable
             os.execl(python, python, * sys.argv)
+
+########################################################################
+
+    def _check_camera_connection(self):
+        ret = False
+        
+        ex = subprocess.Popen(['gphoto2', '--auto-detect'], stdout=subprocess.PIPE)
+        out, err = ex.communicate()
+
+        for line in out.splitlines():
+            if b'usb:' in line:
+                name = line.decode('ASCII').split('usb')[0]
+                txt_camera.setText(name)
+                ret = True
+            else:
+                txt_camera.setText("Keine Kamera verbunden")
+        
+        return ret
+
 
 ########################################################################
 
@@ -188,6 +262,11 @@ class Ui_Fotobox(object):
 ########################################################################
 
     def checkVars(self, FotoboxDialog):
+        
+        if not self._check_camera_connection():
+            QMessageBox.question(FotoboxDialog, 'Keine Kamera angeschlossen', 'Die Kamera ist nicht mit dem Computer verbunden. Schliessen Sie die Kamera an und versuchen Sie es erneut.', QMessageBox.Ok)
+            return False
+        
         if len(txt_cloudFolder.text()) <= 1:
             QMessageBox.question(FotoboxDialog, 'Fehlende Eingabe', 'Bitte geben Sie den Pfad zum You In The Cloud Ordner an.', QMessageBox.Ok)
             return False
