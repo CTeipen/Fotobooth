@@ -316,6 +316,7 @@ class Ui_Fotobox(object):
                 btn_cloudFolder.setEnabled(False)
                 cb_usbFolder.setEnabled(False)
                 cb_qrCode.setEnabled(False)
+                btn_reset.setEnabled(False)
 
                 if cb_usbFolder.isChecked():
                     btn_usbFolder.setEnabled(False)
@@ -347,6 +348,7 @@ class Ui_Fotobox(object):
             btn_cloudFolder.setEnabled(True)
             cb_usbFolder.setEnabled(True)
             cb_qrCode.setEnabled(True)
+            btn_reset.setEnabled(True)
 
             if cb_usbFolder.isChecked():
                     btn_usbFolder.setEnabled(True)
@@ -409,7 +411,7 @@ class Ui_Fotobox(object):
         pickle.dump( fotobox_data, open( SOFTWARE_PATH + "save.p", "wb" ) )
 
         if ret == QMessageBox.Yes:
-            wannaShutdown = True
+            os.system('shutdown -P -t 0')
 
 ########################################################################
 ########################################################################
@@ -421,6 +423,4 @@ if __name__ == "__main__":
     ex = Ui_Fotobox()
     ex.setupUi(FotoboxDialog)
     FotoboxDialog.show()
-    if wannaShutdown:
-        os.system('shutdown -P 2')
     sys.exit(app.exec_())
