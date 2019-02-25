@@ -224,6 +224,7 @@ class Ui_Fotobox(object):
 
     def _check_camera_connection(self):
         ret = False
+        name = "Keine Kamera verbunden"
         
         ex = subprocess.Popen(['gphoto2', '--auto-detect'], stdout=subprocess.PIPE)
         out, err = ex.communicate()
@@ -231,11 +232,9 @@ class Ui_Fotobox(object):
         for line in out.splitlines():
             if b'usb:' in line:
                 name = line.decode('ASCII').split('usb')[0]
-                txt_camera.setText(name)
                 ret = True
-            else:
-                txt_camera.setText("Keine Kamera verbunden")
-        
+                
+        txt_camera.setText(name)
         return ret
 
 
