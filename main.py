@@ -206,19 +206,21 @@ class Ui_Fotobox(object):
 ########################################################################
 
     def resetUI(self, FotoboxDialog):
+        
+        txt_cloudFolder.setText("")
+        txt_cloudFolder.update()
+
+        cb_usbFolder.setChecked(False)
+        txt_usbFolder.setText("")
+
+        cb_qrCode.setChecked(False)
+        txt_qrCode.setText("")
+ 
         if os.path.isfile(SOFTWARE_PATH + "save.p"):
-            txt_cloudFolder.setText("")
-            txt_cloudFolder.update()
-
-            cb_usbFolder.setChecked(False)
-            txt_usbFolder.setText("")
-
-            cb_qrCode.setChecked(False)
-            txt_qrCode.setText("")
-
             os.remove(SOFTWARE_PATH + "save.p")
-            python = sys.executable
-            os.execl(python, python, * sys.argv)
+
+        python = sys.executable
+        os.execl(python, python, * sys.argv)
 
 ########################################################################
 
@@ -233,6 +235,8 @@ class Ui_Fotobox(object):
             if b'usb:' in line:
                 name = line.decode('ASCII').split('usb')[0]
                 ret = True
+                self._kill_gphoto()
+                break
                 
         txt_camera.setText(name)
         return ret
@@ -287,31 +291,35 @@ class Ui_Fotobox(object):
 
 ########################################################################
 
+    def _kill_gphoto(self):
+            
+        ex = subprocess.Popen(['ps', '-A'], stdout=subprocess.PIPE)
+        out, err = ex.communicate()
+
+        for line in out.splitlines():
+            if b'gvfsd-gphoto2' in line:
+                pid = int(line.split(None,1)[0])
+                os.kill(pid, signal.SIGKILL)
+
+########################################################################
+
     def _start_fotobox(self, FotoboxDialog):
+            
         if btn_startEnd.text() == 'Starten':
 
             if self.checkVars(FotoboxDialog):
+                    
                 if cb_usbFolder.isChecked():
-
-                    ex = subprocess.Popen(['ps', '-A'], stdout=subprocess.PIPE)
-                    out, err = ex.communicate()
-
-                    for line in out.splitlines():
-                        if b'gvfsd-gphoto2' in line:
-                            pid = int(line.split(None,1)[0])
-                            print(pid)
-                            os.kill(pid, signal.SIGKILL)
-
-                    ###
+                        
                     print("################################")
                     print(txt_cloudFolder.text())
                     print(txt_usbFolder.text())
                     subprocess.Popen(SOFTWARE_PATH + "start.sh %s %s"
                         % (txt_cloudFolder.text(),
                         txt_usbFolder.text()), stdout=subprocess.PIPE, shell=True)
+                        
                 else:
-
-                    ###
+                        
                     subprocess.Popen(SOFTWARE_PATH + "start.sh %s"
                         % (txt_cloudFolder.text()), stdout=subprocess.PIPE, shell=True)
 
@@ -388,7 +396,7 @@ class Ui_Fotobox(object):
 
 
             btn_startEnd.setText('Starten')
-            self._before_exit()
+        self._before_exit()
         
             
 ########################################################################
