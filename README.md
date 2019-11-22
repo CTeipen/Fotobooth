@@ -10,16 +10,4 @@ Der erste Part liest die SD Card (if => input file) aus. Diese an der Schnittste
 
 ### Restore
 
-1. Unmounten der SD Karte
-
-```sudo umount /dev/disk2```
-
-
-2. Formtatieren
-
-```sudo mkdosfs -I -F32 /dev/disk2```
-
-
-3. Neu bespielen mit einem alten Backup
-
-```sudo dd bs=4m if=~/Desktop/fotobox-2019-11-21.dmg | pv -s 32G | sudo dd of=/dev/disk2```
+Über das Programm [balenaEtcher](https://www.balena.io/etcher/)
