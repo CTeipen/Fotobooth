@@ -11,3 +11,8 @@ Der erste Part liest die SD Card (if => input file) aus. Diese an der Schnittste
 ### Restore
 
 Über das Programm [balenaEtcher](https://www.balena.io/etcher/)
+
+
+## Update Software
+
+Im Terminal in den Ordner gehen, der das Projekt Fotobooth beinhaltet und ./update.sh. ausführen. Es wird der aktuelle Stand des Projektes gezogen, die Dateien ausführbar gemacht und der Pi neu gestartet.
